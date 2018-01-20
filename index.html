@@ -77,9 +77,9 @@
                                   <li><a href="#line3_1">Manage cache</a></li>
                                   <li><a href="#line3_2">Create Controllers</a></li>
                                   <li><a href="#line3_3">Creating Models</a></li>
-                                  <li><a href="#line3_5">Database management</a></li>
-                                  <li><a href="#line3_6">Unit tests</a></li>
-                                  <li><a href="#line3_7">Using scheduled tasks</a></li>
+                                  <li><a href="#line3_4">Database management</a></li>
+                                  <li><a href="#line3_5">Unit tests</a></li>
+                                  <li><a href="#line3_6">Using scheduled tasks</a></li>
                               </ul>
                             </li>
                             <li><a href="#line4">How to's</a>
@@ -269,9 +269,24 @@
 
                         <p>Now navigate to localhost:8089 in your browser to check if the installation was successful. You should be able to see the welcome json object.</p>
 
-                        <h4>2) Manual installation (Only if you don't want to use docker) <a href="#line3">#goto next section</a></h4>
+                        <h4>2) Manual installation (Only if you don't want to use docker) <a href="#line3">#goto next section</a> <a href="#top">#back to top</a></h4>
+                        <p>Be sure to install: apache2(or any php web server), php, composer, mysql and redis.</p>
                         <p>Configure your web server to allow override, so GV is able to use the .htaccess and redirect the requests to a single point, basically the app run.</p>
-                        <a href="#" class="btn btn-primary">Get a Installation Service</a> <a href="#" class="btn btn-info">Ask a Question</a>
+                        <p>For example on apache2 web server edit your virtual configuration</p>
+
+                        <img src="images/allow_override.png" />
+                        <br/>
+
+                        <p>Enable the rewrite module:</p>
+                        <pre class="brush: html">
+                          $> sudo a2enmod rewrite
+                        </pre>
+
+                        <p>Edit your php.ini to let apache2 handle sessions through redis, changing the following values:</p>
+                        session.save_handler = redis
+                        <br/> and <br/>
+                        session.save_path = "tcp://localhost:6379" #or your redis host
+                        <br/>
 
                         <hr>
                         <div class="row">
@@ -290,40 +305,186 @@
 
                         <div class="row">
                             <div class="col-md-12 left-align">
-                                <h2 class="dark-text">How to Install Theme <a href="#top">#back to top</a><hr></h2>
+                                <h2 class="dark-text">gvconsole + docker <3 <a href="#top">#back to top</a>
+                                </h2>
+                                <p>gvconsole is a shell script that will lead you thorugh all the administration options.</p>
+                                <p>The idea is to manage everything through gvconsole {available_command}</p>
+                                <p>For starting, let's list all the possible commands with gvconsole</p>
+                                <pre class="brush: html">
+                                  $> ./gvconsole
+                                </pre>
+
+                                <p>That command will output:</p>
+                                clear-cache<br/>
+                                create-controller<br/>
+                                create-model<br/>
+                                create-task<br/>
+                                create-user-role<br/>
+                                create-user-status<br/>
+                                doctrine<br/>
+                                doctrine-migrations<br/>
+                                phpunit<br/>
+                                remove-task<br/>
+                                scheduler<br/>
+                                list-tasks<br/>
+                                build<br/>
+                                start<br/>
+                                <br/>
+                                <p>We will go one by one, don't worry.</p>
+
+                                <hr>
                             </div>
                             <!-- end col -->
                         </div>
                         <!-- end row -->
 
-                        <h4>Upload via WordPress Admin</h4>
-
-                        <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-
-                        <a href="#" class="btn btn-primary">Get a Installation Service</a> <a href="#" class="btn btn-info">Ask a Question</a>
-
-                        <hr>
-
-                        <h4>Upload via FTP Server</h4>
-
-                        <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-
-                        <a href="#" class="btn btn-primary">Get a Installation Service</a> <a href="#" class="btn btn-info">Ask a Question</a>
-                        <hr>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="media">
-                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/yQnQyI5WlKs" frameborder="0" allowfullscreen></iframe>
-                                </div>
-
+                            <div class="col-md-5">
+                                <h4 id="line3_1">Manage cache - <a href="#top">#back to top</a></h4>
+                                <h5>$> ./gvconsole clear-cache</h5>
+                                <p>In a typical gv application, the cache is going to be managed by redis, but redis is not mandatory, the strategy is, gv will ping redis, if this one is available it will be used, if not, the files cache strategy will be put in place.
+                                <br/>If redis is not used, the cache will be stored in the var/cache/files/ directory.</p>
                             </div>
-                            <div class="col-md-6">
-                                <div class="media">
-                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/z0kEVwJB_go" frameborder="0" allowfullscreen></iframe>
-                                </div>
-
+                            <!-- end col -->
+                            <div class="col-md-7">
+                              <pre class="brush: html">
+                                ./gvconsole clear-cache
+                                usage example: clear-cache 1
+                                Please select the option:
+                                --------------------------
+                                1 - Flush all
+                                2 - Flush config
+                                3 - Flush routes
+                                4 - Flush translations
+                                5 - Flush controller names
+                                --------------------------
+                              </pre>
                             </div>
                         </div>
+                        <!-- end row -->
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4 id="line3_2">Create controllers - <a href="#top">#back to top</a></h4>
+                                <p>The create controller that will help you to create your controller in the correct path, and extending the correct base class. Parameters are: class name and method names separated by space</p>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-md-7">
+                              <pre class="brush: html">
+                                ./gvconsole create-controller
+                                usage example: ./gvconsole create-controller Cars \
+                                list create update delete
+                              </pre>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_3">Create models - <a href="#top">#back to top</a></h4>
+                                <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. long established fact that a reader will English.</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_4">Database management - <a href="#top">#back to top</a></h4>
+                                <p>GV uses doctrine as the defacto ORM, to execute the doctrine commands, run:</p>
+                                <pre class="brush: html">
+                                  ./gvconsole doctrine
+                                </pre>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+                        <div class="row">
+                            <p>Please if you have doubts about doctrine, read <a href="http://docs.doctrine-project.org/en/latest/">their documentation</a>.</p>
+                            <pre class="brush: html">
+                              ./gvconsole doctrine
+                              #!/usr/bin/env php
+                              Doctrine Command Line Interface version 2.4.8
+
+                              Usage:
+                                command [options] [arguments]
+
+                              Options:
+                                -h, --help            Display this help message
+                                -q, --quiet           Do not output any message
+                                -V, --version         Display this application version
+                                    --ansi            Force ANSI output
+                                    --no-ansi         Disable ANSI output
+                                -n, --no-interaction  Do not ask any interactive question
+                                -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+                              Available commands:
+                                help                            Displays help for a command
+                                list                            Lists commands
+                               dbal
+                                dbal:import                     Import SQL file(s) directly to Database.
+                                dbal:run-sql                    Executes arbitrary SQL directly from the command line.
+                               orm
+                                orm:clear-cache:metadata        Clear all metadata cache of the various cache drivers.
+                                orm:clear-cache:query           Clear all query cache of the various cache drivers.
+                                orm:clear-cache:result          Clear all result cache of the various cache drivers.
+                                orm:convert-d1-schema           Converts Doctrine 1.X schema into a Doctrine 2.X schema.
+                                orm:convert-mapping             Convert mapping information between supported formats.
+                                orm:convert:d1-schema           Converts Doctrine 1.X schema into a Doctrine 2.X schema.
+                                orm:convert:mapping             Convert mapping information between supported formats.
+                                orm:ensure-production-settings  Verify that Doctrine is properly configured for a production environment.
+                                orm:generate-entities           Generate entity classes and method stubs from your mapping information.
+                                orm:generate-proxies            Generates proxy classes for entity classes.
+                                orm:generate-repositories       Generate repository classes from your mapping information.
+                                orm:generate:entities           Generate entity classes and method stubs from your mapping information.
+                                orm:generate:proxies            Generates proxy classes for entity classes.
+                                orm:generate:repositories       Generate repository classes from your mapping information.
+                                orm:info                        Show basic information about all mapped entities
+                                orm:run-dql                     Executes arbitrary DQL directly from the command line.
+                                orm:schema-tool:create          Processes the schema and either create it directly on EntityManager Storage Connection or generate the SQL output.
+                                orm:schema-tool:drop            Drop the complete database schema of EntityManager Storage Connection or generate the corresponding SQL output.
+                                orm:schema-tool:update          Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata.
+                            </pre>
+                            <!-- end col -->
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h4 id="line3_5">Unit tests - <a href="#top">#back to top</a></h4>
+                                <p>Unit tests are created under the tests folder in the root of the project, Phpunit is used for them.
+                                if you have any doubt please read <a href="https://phpunit.de/documentation.html">their documentation</a>.</p>
+                                <p>To run unit tests, please use ./gvconsole phpunit</p>
+                            </div>
+                            <!-- end col -->
+                            <div class="col-md-7">
+                              <pre class="brush: html">
+                                ./gvconsole phpunit
+                              </pre>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a href="upload/thumbnail.png" data-rel="prettyPhoto"><img src="images/upload/thumbnail.png" alt="" class="img-responsive img-thumbnail"></a>
+                            </div>
+
+                            <div class="col-md-8">
+                                <h4 id="line3_6">Using scheduled tasks - <a href="#top">#back to top</a></h4>
+                                <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. long established fact that a reader will English.</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
 
                     </section>
                     <!-- end section -->
