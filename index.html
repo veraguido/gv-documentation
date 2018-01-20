@@ -474,62 +474,63 @@
                         <hr>
 
                         <div class="row">
-                            <div class="col-md-4">
-                                <a href="upload/thumbnail.png" data-rel="prettyPhoto"><img src="images/upload/thumbnail.png" alt="" class="img-responsive img-thumbnail"></a>
-                            </div>
-
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <h4 id="line3_6">Using scheduled tasks - <a href="#top">#back to top</a></h4>
-                                <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. long established fact that a reader will English.</p>
+                                <p>The scheduled tasks are basically cron jobs that will execute your tasks on a specific period of time.</p>
+                                <p>GV will handle the setup for it you only need to focus on 3 things: create the task that you want to execute, enabling your task and disabling it if you want.</p>
+                                <p>Tasks should be put in the tasks directory under Resources</p>
+                                <img src="images/tree.png" alt="tasks marked">
+                                <p>In your task you can do whatever is needed, for instance, could be, log amount of orders created, get information from an external system and save it into the database, run a mysql query, etc.</p>
                             </div>
                             <!-- end col -->
                         </div>
                         <!-- end row -->
 
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>In order to enable your scheduled task use the gvconsole command:</p>
+                                <pre class="brush: html">
+                                  ./gvconsole enable-task \* \* \* \* \* {name of your task as you have it on your tasks folder, without the .php} {identifier for deletion}
+                                </pre>
+                                <p>If you are wondering what are the * in the command, please read <a href="https://www.computerhope.com/unix/ucrontab.htm">this</a>.</p>
+                                <p>For example:</p>
+                                <pre class="brush: html">
+                                  ./gvconsole enable-task \* \* \* \* \* awesome-task aw3some
+                                </pre>
+                                <p>The selected task, in this case will run every minute, and will log a specific message through logger.</p>
+                                <p>To remove a task use the gvconsole disable-task command, using the identifier when you enabled it.</p>
+                                <pre class="brush: html">
+                                  ./gvconsole disable-task aw3some
+                                </pre>
+                                <p>If you don't remember the identifier of a command use the gvconsole list-tasks command:</p>
+                                <pre class="brush: html">
+                                  ./gvconsole list-tasks
+                                </pre>
+                                <pre class="brush: html">
+                                  $> ./gvconsole list-tasks
+                                  * * * * * php resources/tasks/awesome-task.php >> var/log/cron.log #aw3some
+                                </pre>
+                                <p>All your tasks will log their output into the var/log/cron.log file</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
                     </section>
                     <!-- end section -->
 
                     <section id="line4" class="section">
 
-                        <div class="row">
-                            <div class="col-md-12 left-align">
-                                <h2 class="dark-text">Necessary Plugins <a href="#top">#back to top</a><hr></h2>
-                            </div>
-                            <!-- end col -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_1">Using scheduled tasks - <a href="#top">#back to top</a></h4>
+                            <p>The scheduled tasks are basically cron jobs that will execute your tasks on a specific period of time.</p>
+                            <p>GV will handle the setup for it you only need to focus on 3 things: create the task that you want to execute, enabling your task and disabling it if you want.</p>
+                            <p>Tasks should be put in the tasks directory under Resources</p>
+                            <img src="images/tree.png" alt="tasks marked">
+                            <p>In your task you can do whatever is needed, for instance, could be, log amount of orders created, get information from an external system and save it into the database, run a mysql query, etc.</p>
                         </div>
-                        <!-- end row -->
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <img src="images/upload/plugin1.png" alt="" class="img-responsive img-thumbnail">
-                                <h4>Plugin name #1</h4>
-                                <p>Lorem the It is a long established fact that a reader will be distracted.. Please read more about WordPress here.</p>
-                            </div>
-                            <!-- end col -->
-
-                            <div class="col-md-4">
-                                <img src="images/upload/plugin2.png" alt="" class="img-responsive img-thumbnail">
-                                <h4>Plugin name #2</h4>
-                                <p>Lorem the It is a long established fact that a reader will be distracted.. Please read more about WordPress here.</p>
-                            </div>
-                            <!-- end col -->
-
-                            <div class="col-md-4">
-                                <img src="images/upload/plugin3.png" alt="" class="img-responsive img-thumbnail">
-                                <h4>Plugin name #3</h4>
-                                <p>Lorem the It is a long established fact that a reader will be distracted.. Please read more about WordPress here.</p>
-                            </div>
-                            <!-- end col -->
-
-                            <div class="col-md-12">
-                                <p>Lorem the It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.</p>
-
-                                <div class="text-center">
-                                    <a href="#" class="btn btn-primary">Get a Installation Service</a> <a href="#" class="btn btn-info">Ask a Question</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end row -->
+                        <!-- end col -->
+                    </div>
 
                     </section>
                     <!-- end section -->
