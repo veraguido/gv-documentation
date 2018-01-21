@@ -51,7 +51,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="big-title text-center">
-                            <h1>GV</h1>
+                            <img src="images/logo.png" alt="" width="150" height="150" />
                             <p class="lead">GV framework documentation version 1.0</p>
                         </div>
                         <!-- end title -->
@@ -70,6 +70,7 @@
                 <div class="col-md-3">
                     <nav class="docs-sidebar" data-spy="affix" data-offset-top="300" data-offset-bottom="200" role="navigation">
                         <ul class="nav">
+                            <li> <a href="#top"> <img src="images/logo.png" width="24" height="24" alt=""> </a></li>
                             <li><a href="#line1">Getting Started</a></li>
                             <li><a href="#line2">How to Install GV</a></li>
                             <li><a href="#line3">gvconsole + docker <3 </a>
@@ -394,7 +395,7 @@
 
                         <hr>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div>
                                 <h4 id="line3_4">Database management - <a href="#top">#back to top</a></h4>
                                 <p>GV uses doctrine as the defacto ORM, to execute the doctrine commands, run:</p>
                                 <pre class="brush: html">
@@ -451,6 +452,40 @@
                                 orm:schema-tool:update          Executes (or dumps) the SQL needed to update the database schema to match the current mapping metadata.
                             </pre>
                             <!-- end col -->
+                            <br/>
+                            <br/>
+                            <p>For using doctrine migrations, those are going to be put under resources/migrations/classes/ directory</p>
+                            <p>The command to be run to manage migrations is ./gvconsole doctrine-migrations</p>
+                            <pre class="brush: html">
+                              ./gvconsole doctrine-migrations
+                              #!/usr/bin/env php
+                              Doctrine Migrations version v1.5.0
+
+                              Usage:
+                                command [options] [arguments]
+
+                              Options:
+                                -h, --help            Display this help message
+                                -q, --quiet           Do not output any message
+                                -V, --version         Display this application version
+                                    --ansi            Force ANSI output
+                                    --no-ansi         Disable ANSI output
+                                -n, --no-interaction  Do not ask any interactive question
+                                -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+
+                              Available commands:
+                                help                   Displays help for a command
+                                list                   Lists commands
+                               migrations
+                                migrations:diff        Generate a migration by comparing your current database to your mapping information.
+                                migrations:execute     Execute a single migration version up or down manually.
+                                migrations:generate    Generate a blank migration class.
+                                migrations:latest      Outputs the latest version number
+                                migrations:migrate     Execute a migration to a specified version or the latest available version.
+                                migrations:status      View the status of a set of migrations.
+                                migrations:up-to-date  Tells you if your schema is up-to-date.
+                                migrations:version     Manually add and delete migration versions from the version table.
+                            </pre>
                         </div>
 
                         <hr>
@@ -519,15 +554,38 @@
                     <!-- end section -->
 
                     <section id="line4" class="section">
+                    <div class="row">
+                        <div class="col-md-12 left-align">
+                            <h2 class="dark-text">How to's <a href="#top">#back to top</a><hr></h2>
+                        </div>
+                        <!-- end col -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_1">Validate a field - <a href="#top">#back to top</a></h4>
+                            <p>Let's imagine that you need to validate a specific field that is comming from the request. In this case is will be the "email" field</p>
+                            <p>In this field you need to validate a set of rules, first that the field is not empty, then that the field is a valid email string.</p>
+                            <p>GV has a validation service for you to use and validate your fields. Usage:</p>
+                            <img src="images/validation_usage.png" alt="validation usage">
+                            <p>This will return true, false or throw an exception.</p>
+                            <p>There are 3 validation strategies in place, you can add the ones that you need for your project, and hopefully send the pull request to the gv main repo :)</p>
+                        </div>
+                        <!-- end col -->
+                    </div>
 
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 id="line4_1">Using scheduled tasks - <a href="#top">#back to top</a></h4>
-                            <p>The scheduled tasks are basically cron jobs that will execute your tasks on a specific period of time.</p>
-                            <p>GV will handle the setup for it you only need to focus on 3 things: create the task that you want to execute, enabling your task and disabling it if you want.</p>
-                            <p>Tasks should be put in the tasks directory under Resources</p>
-                            <img src="images/tree.png" alt="tasks marked">
-                            <p>In your task you can do whatever is needed, for instance, could be, log amount of orders created, get information from an external system and save it into the database, run a mysql query, etc.</p>
+                            <h4 id="line4_2">Manage http handling - <a href="#top">#back to top</a></h4>
+                            <p>All the requests sent to a gv application will go through the index.php file located at the public folder, this is managed though the .htaccess file</p>
+                            <p>Gv has a set of classes that are respondible of the http lifecycle, those are HttpRequest and HttpResponse. This two classes are already initialized and put into the main controller class.</p>
+                            <img src="images/http-lifecycle.png" alt="" style="max-width: 100%;">
+                            <p><u>HttpRequest</u></p>
+                            <p>HttpRequest has the getParameter method that will return the fields wanted. For instance, inside a controller you can:</p>
+                            <img src="images/request_getparameter.png" alt="http request">
+                            <p>Within the HttpRequest You can also check the request method using isPost, isGet, isDelete, isPut</p>
+
+                            <p><u>HttpResponse</u></p>
+                            <p>In your controller you can setup your httpresponse, the default behavior will be:</p>
                         </div>
                         <!-- end col -->
                     </div>
