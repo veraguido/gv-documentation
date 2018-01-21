@@ -200,8 +200,9 @@
                                     <li><a href="https://phpunit.de/" rel="nofollow">PHP Unit</a> - Unit tests suite.</li>
                                     <li><a href="https://github.com/Seldaek/monolog">Monolog</a> - Logging system</li>
                                     <li><a href="https://github.com/PHPMailer/PHPMailer">PhpMailer</a> - Mail class</li>
-                                    <li><a href="https://github.com/TiBeN/CrontabManager">Cron manager</a> - Mail class</li>
-                                    <li><a href="https://github.com/squizlabs/PHP_CodeSniffer">Code sniffer</a> - Mail class</li>
+                                    <li><a href="https://github.com/TiBeN/CrontabManager">Cron manager</a></li>
+                                    <li><a href="https://github.com/squizlabs/PHP_CodeSniffer">Code sniffer</a></li>
+                                    <li> <a href="https://github.com/surjithctly/documentation-html-template">HTML documentation template</a></li>
                                 </ul>
 
                                 <p>And of course GV itself is open source with a <a href="https://github.com/veraguido/gv">public repository</a> on GitHub.</p>
@@ -267,7 +268,12 @@
                         <pre class="brush: html">
                           $> ./gvconsole start
                         </pre>
-
+                        <br/>
+                        <br/>
+                        <p>Provision your database:</p>
+                        <pre class="brush: html">
+                          ./gvconsole doctrine orm:schema-tool:create
+                        </pre>
                         <p>Now navigate to localhost:8089 in your browser to check if the installation was successful. You should be able to see the welcome json object.</p>
 
                         <h4>2) Manual installation (Only if you don't want to use docker) <a href="#line3">#goto next section</a> <a href="#top">#back to top</a></h4>
