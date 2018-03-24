@@ -145,9 +145,7 @@
                                             <h4>Requirements</h4>
                                             <p>You will need the following dependencies to make GV work.</p>
                                             <ol>
-                                                <li><a href="http://php.net/manual/en/install.php" target="_blank">PHP</a> with php-xml and php-mbstring extensions installed</li>
-                                                <li><a href="https://getcomposer.org/" target="_blank">Composer</a></li>
-                                                <li>Optional but highly recommended: <a href="https://docs.docker.com/engine/installation/" target="_blank">Docker</a></li>
+                                                <li><a href="https://docs.docker.com/engine/installation/" target="_blank">Docker</a></li>
                                             </ol>
                                             <div class="intro2 clearfix">
                                                 <p><i class="fa fa-exclamation-triangle"></i> Docker will create all the containers needed for GV to work as fast as possible
@@ -249,10 +247,6 @@
                           $> git clone git@github.com:veraguido/gv.git
                         </pre>
                         <br/>
-                        <p>Run composer to get all the dependencies:</p>
-                        <pre class="brush: html">
-                          $> composer install
-                        </pre>
                         <br/>
                         <br/>
                         <h4>1) Using docker</h4>
@@ -274,7 +268,7 @@
                         <pre class="brush: html">
                           ./gvconsole doctrine orm:schema-tool:create
                         </pre>
-                        <p>Now navigate to localhost:8089 in your browser to check if the installation was successful. You should be able to see the welcome json object.</p>
+                        <p>Now navigate to localhost:8089 in your browser to check if the installation was successful. You should be able to see the welcome json object indicating the version of GV and the cache that is being used.</p>
 
                         <h4>2) Manual installation (Only if you don't want to use docker) <a href="#line3">#goto next section</a> <a href="#top">#back to top</a></h4>
                         <p>Be sure to install: apache2(or any php web server), php, composer, mysql and redis.</p>
@@ -385,6 +379,8 @@
                                 list create update delete
                               </pre>
                             </div>
+
+                            <p>If you want to use versions for your API, just create a subdirectory inside the Controllers folder.</p>
                         </div>
                         <!-- end row -->
 
