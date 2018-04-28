@@ -92,10 +92,13 @@
                                   <li><a href="#line4_5">Unit test</a></li>
                                   <li><a href="#line4_6">Configue your project</a></li>
                                   <li><a href="#line4_7">Overwrite a route</a></li>
+                                  <li><a href="#line4_8">Return specific HTTP response headers</a></li>
+                                  <li><a href="#line4_9">One try catch to rule them all</a></li>
                               </ul>
                             </li>
                             <li><a href="#line5">Best practices</a></li>
-                            <li><a href="#line6">Who I am</a></li>
+                            <li><a href="#line6">Depency Injection</a></li>
+                            <li><a href="#line7">Who I am</a></li>
                             <!--li><a href="#line7">Revolution Slider</a></li>
                             <li><a href="#line8">How to Use Option Panel</a>
                                 <ul class="nav">
@@ -649,6 +652,29 @@
                         <!-- end col -->
                     </div>
 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_8">Return a specific HTTP response headers - <a href="#top">#back to top</a></h4>
+                            <p>GV comes with some pre-built Http response codes: 404 Not found, 400 Bad Request, and 401 Unauthorized, you can always add the response headers that you need in the HttpResponse Class.</p>
+                            <p>Is recommended that you use them on your controllers, calling $this->httpResponse->notFound() (unauthorized() ,  badRequest())</p>
+                        </div>
+                        <!-- end col -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_9">One try catch to rule them all - <a href="#top">#back to top</a></h4>
+                            <p>GV was done with ease in mind, every exception thrown will be catched by the application and depending on the state of the app two things can happen:</p>
+                            <ul>
+                                <li>If the application is in dev mode (the dev mode flag is true on the config.yml file) then the application will die showing the exception message</li>
+                                <li>If the application is not in dev mode, then the application will log the error and redirect the location to the root.</li>
+                            </ul>
+
+                            <p>As a good practice you can throw a GVException with parameters, that will be sent to the log through Logger.</p>
+                        </div>
+                        <!-- end col -->
+                    </div>
+
                     </section>
                     <!-- end section -->
 
@@ -686,6 +712,61 @@
                     <!-- end section -->
 
                     <section id="line6" class="section">
+
+                        <div class="row">
+                            <div class="col-md-12 left-align">
+                                <h2 class="dark-text">Dependency Injection<a href="#top">#back to top</a><hr></h2>
+                            </div>
+                            <!-- end col -->
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p>GV provides a way of using <a href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> out of the box. This technique is based on inversion of control, givin the responsibility of the instatiation of the objects to the application based on rules.</p>
+                                <p>The rules imposed in GV are two:</p>
+                                <ul>
+                                    <li>1 - Register your classes in ioc.yml</li>
+                                    <li>2 - Get your instance from the DIContainer</li>
+                                </ul>
+
+                                <p>Additionally you can Inject your objects into other objects (while they all are registered in ioc.yml, let's take a look at an example</p>
+                                <p>Inside the examples controller we can find the login method, which uses the DIContainer to get an instnce of the "loginCommand".</p>
+                                <img src="images/di1.png" />
+
+                                <p>Let's start taking a look at the ioc.yml</p>
+                                <img src="images/di2.png" />
+                                <ul>
+                                    <li>1) The classPath is the first part of your namespace (without your className)</li>
+                                    <li>2) The objects node is where all the definition of your objects will be placed.</li>
+                                    <li>3) The point 3 is the id attached to the object that you define in this case the id for this object is "loginCommand"</li>
+                                    <li>4) The name of your class</li>
+                                </ul>
+
+                                <p>Other valid nodes in your objects are: parameters (if you want to initialize your object with specific parameters, and singleton, if you want only one instance of your object to live on the application lifecycle</p>
+                                <p>Now let's take a look at the LogginCommand Class.</p>
+                                <img src="images/di3.png" />
+
+                                <p>We can identify 2 important things of this class: The @Inject doc comment and the that the userService is not instantiated anywhere</p>
+                                <p>The @Inject doc comment will tell the DIContainer to autoinstantiate the userService (with the definition put in ioc.yml) and Inject that into a variable called exactly as the id</p>
+                                <p>Through this technique you can Inject objects within your objects and forget about instantiation :)</p>
+                            </div>
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <p>I am just a regular guy that wanted to contribute to the open source community. I hope you enjoy GV as much as I enjoyed building it.</p>
+                                <p>You will find more information about me <a href="https://www.linkedin.com/in/guidovera/?locale=en_US">here</a>.</p>
+                            </div>
+                            <!-- end col -->
+
+                        </div>
+                        <!-- end row -->
+
+                    </section>
+
+                    <section id="line7" class="section">
 
                         <div class="row">
                           <div class="col-md-12 left-align">
