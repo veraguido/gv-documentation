@@ -725,7 +725,8 @@
                                 <p>GV provides a way of using <a href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> out of the box. This technique is based on inversion of control, giving the responsibility of the instatiation of the objects to the application based on rules.</p>
                                 <p>The rules imposed in GV are two:</p>
                                 <ul>
-                                    <li>1 - Register your classes in ioc.yml</li>
+                                    <li>1 - Register your classes in ioc.yml, the order of the defined objects is important, if one object needs another to be instanciated, then the first object needs to be put on top of the second</li>
+                                    <li>2 - If you need an object to be part of the constructor of another object, you can pass the reference with "@" and the id of the needed object</li>
                                     <li>2 - Get your instance from the DIContainer</li>
                                 </ul>
 
@@ -736,19 +737,25 @@
                                 <p>Let's start taking a look at the ioc.yml</p>
                                 <img src="images/di2.png" />
                                 <ul>
-                                    <li>1) The classPath is the first part of your namespace (without your className)</li>
-                                    <li>2) The objects node is where all the definition of your objects will be placed.</li>
-                                    <li>3) The point 3 is the id attached to the object that you define in this case the id for this object is "loginCommand"</li>
+                                    <li>2) The classPath is the first part of your namespace (without your className)</li>
+                                    <li>3) The objects node is where all the definition of your objects will be placed.</li>
+                                    <li>3.1) The direct node under objects is the id attached to the object that you define in this case the id for this object is "loginCommand"</li>
                                     <li>4) The name of your class</li>
+                                    <li>5) you will use the arguments node to add all the needed arguments for your constructor. If you use the "@" key means that you are instantiating another object with that id to be used on the constructor. In this case, the userService will be used (from the services node)</li>
                                 </ul>
 
                                 <p>Other valid nodes in your objects are: parameters (if you want to initialize your object with specific parameters, and singleton, if you want only one instance of your object to live on the application lifecycle</p>
                                 <p>Now let's take a look at the LogginCommand Class.</p>
-                                <img src="images/di3.png" />
+                                <img src="images/di4.png" />
 
-                                <p>We can identify 2 important things of this class: The @Inject doc comment and the that the userService is not instantiated anywhere</p>
-                                <p>The @Inject doc comment will tell the DIContainer to autoinstantiate the userService (with the definition put in ioc.yml) and Inject that into a variable called exactly as the id</p>
-                                <p>Through this technique you can Inject objects within your objects and forget about instantiation :)</p>
+                                <p>We can identify 3 important things of this class:</p>
+                                <ul>
+                                    <li>The @Inject doc comment that will instanciate and inject the object got from ioc.yml</li>
+                                    <li>There's no need of declaring the variables with the @Inject</li>
+                                    <li>The auto-injection of the userService for the constructor (this is the relationship done with the "@"</li>
+                                </ul>
+                                
+                                <p>Through this technique you can Inject objects within your objects through properties or in the constructor itself and forget about instantiation :)</p>
                             </div>
                         </div>
                         <!-- end row -->
