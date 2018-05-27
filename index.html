@@ -567,7 +567,7 @@
                             <p>GV has a validation service for you to use and validate your fields. Usage:</p>
                             <img src="images/validation_usage.png" alt="validation usage">
                             <p>This will return true, false or throw an exception.</p>
-                            <p>There are 3 validation strategies in place, you can add the ones that you need for your project, and hopefully send the pull request to the gv main repo :)</p>
+                            <p>There are 3 validation strategies in place, you can add the ones that you need for your project extending the ValidationStrategyInterface, and hopefully send the pull request to the gv main repo :)</p>
                         </div>
                         <!-- end col -->
                     </div>
@@ -576,7 +576,7 @@
                         <div class="col-md-12">
                             <h4 id="line4_2">Manage http handling - <a href="#top">#back to top</a></h4>
                             <p>All the requests sent to a gv application will go through the index.php file located at the public folder, this is managed though the .htaccess file</p>
-                            <p>Gv has a set of classes that are respondible of the http lifecycle, those are HttpRequest and HttpResponse. This two classes are already initialized and put into the main controller class.</p>
+                            <p>Gv has a set of classes that are responsible of the http lifecycle, those are HttpRequest and HttpResponse. This two classes are already initialized and put into the main controller class.</p>
                             <img src="images/http-lifecycle.png" alt="" style="max-width: 100%;">
                             <p><u>HttpRequest</u></p>
                             <p>HttpRequest has the getParameter method that will return the fields wanted. For instance, inside a controller you can:</p>
@@ -604,7 +604,7 @@
                             <img src="images/event.png" alt="">
                             <br/><br/>
                             <h4>Listeners</h4>
-                            <p>Your listeners must extend the EventListener interface and you must implement the handleEvent method that will be executed when the event is triggered. In the following example, the user will receive an email when the account is created, while devmode is not true.</p>
+                            <p>Your listeners must implement EventListenerinterface and you must implement the handleEvent method that will be executed when the event is triggered. In the following example, the user will receive an email when the account is created, while devmode is not true.</p>
                             <img src="images/listener.png" alt="">
                             <br/><br/>
                             <h4>An event dispatcher</h4>
@@ -618,7 +618,7 @@
                         <div class="col-md-12">
                             <h4 id="line4_4">Create and execute a command - <a href="#top">#back to top</a></h4>
                             <p>GV includes a command patter put in place for enforcing the hexagonal architecture and make your code frameworkless.</p>
-                            <p>Your commands will need to extend the ICommand interface, and you will need to implement the execute method. For example:</p>
+                            <p>Your commands will need to implement CommandInterface, and you will need to implement the execute method. For example:</p>
                             <img src="images/command.png" alt="" />
                             <p>Then you need to execute the command where you think is needed:</p>
                             <img src="images/command-login.png" alt="">
