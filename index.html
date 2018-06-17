@@ -587,6 +587,18 @@
                             <p>In your controller you can setup your httpresponse, the default behavior will be:</p>
                             <p>The methods available in the HttpResponse class are:</p>
                             <img src="images/httpresponse-methods.png" alt="">
+                            <p>You can add http method validation to your controllers, by using the @httpMethod annotation, as an example:</p>
+                            <pre class="brush: html">
+                                /**
+                                * @httpMethod("GET")
+                                */
+                                public function view()
+                                {
+                                    //your code here
+                                }
+                              </pre>
+                              <p>The above will validate that the actual request is of that type (in this case a get type)</p>
+                              <p>Tip: you can use multiple Http methods in this annotation, for instance @httpMethod("GET", "POST", "PUT") </p>
                         </div>
                         <!-- end col -->
                     </div>
