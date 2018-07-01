@@ -735,16 +735,19 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p>GV provides a way of using <a href="https://en.wikipedia.org/wiki/Dependency_injection">dependency injection</a> out of the box. This technique is based on inversion of control, giving the responsibility of the instatiation of the objects to the application based on rules.</p>
-                                <p>The rules imposed in GV are two:</p>
+                                <p>The rules imposed in GV are three:</p>
                                 <ul>
                                     <li>1 - Register your classes in ioc.yml, the order of the defined objects is important, if one object needs another to be instanciated, then the first object needs to be put on top of the second</li>
-                                    <li>2 - If you need an object to be part of the constructor of another object, you can pass the reference with "@" and the id of the needed object</li>
-                                    <li>2 - Get your instance from the DIContainer</li>
+                                    <li>2 - If you need an object to be part of the constructor of another object, you can pass the reference with "@" and the id of the needed object or multiple objects as arguments</li>
+                                    <li>3 - Inject your instances in your objects</li>
                                 </ul>
 
-                                <p>Additionally you can Inject your objects into other objects (while they all are registered in ioc.yml, let's take a look at an example</p>
-                                <p>Inside the examples controller we can find the login method, which uses the DIContainer to get an instnce of the "loginCommand".</p>
+                                <p>Let's take a look at an example</p>
+                                <p>Inside the examples controller we can find the login method, inside it we can see that there's a call made to "getLoginCommand", all GvControllers have <a href="http://php.net/manual/en/language.oop5.magic.php">magic methods</a> implemented. Meaning that you can call <b>any ioc object from it's name</b></p>
+                                <p>In this specific example, the object called is "loginCommand"</p>
                                 <img src="images/di1.png" />
+                                <p>you can use this example if you need to pass more than one object to inject in the constructor</p>
+                                <img src="images/di_array_args.png" />
 
                                 <p>Let's start taking a look at the ioc.yml</p>
                                 <img src="images/di2.png" />
