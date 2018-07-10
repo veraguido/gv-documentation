@@ -94,6 +94,7 @@
                                   <li><a href="#line4_7">Overwrite a route</a></li>
                                   <li><a href="#line4_8">Return specific HTTP response headers</a></li>
                                   <li><a href="#line4_9">One try catch to rule them all</a></li>
+                                  <li><a href="#line4_10">Generate your own fractal transformer</a></li>
                               </ul>
                             </li>
                             <li><a href="#line5">Best practices</a></li>
@@ -683,6 +684,20 @@
                             </ul>
 
                             <p>As a good practice you can throw a GVException with parameters, that will be sent to the log through Logger.</p>
+                        </div>
+                        <!-- end col -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_9">Generate your own fractal transformer - <a href="#top">#back to top</a></h4>
+                            <p>A fractal transformer is a way of present filtered data as output on the response of your Restful API</p>
+                            <p>As part of the response of your httpResponse object you can pass a Transformer object (that extends from TransformerAbstract) and The response method will call the transform method of that transformer object, Basically transforming the data the way you need it</p>
+
+                            <p>The way to do this is extending the TransformerAbstract class, and pass your object on the constructor. In this new transformer class you need to overwrite the transform method. </p>
+                            <p>The transform method should return an array containing exactly what you need to response. See the example below:</p>
+
+                            <img src="images/transformer.png" />
                         </div>
                         <!-- end col -->
                     </div>
