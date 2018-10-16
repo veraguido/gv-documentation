@@ -52,7 +52,7 @@
                     <div class="col-md-12">
                         <div class="big-title text-center">
                             <img src="images/logo.png" alt="" width="150" height="150" />
-                            <p class="lead">GV framework documentation version 1.0</p>
+                            <p class="lead">GV framework documentation version 1.4</p>
                         </div>
                         <!-- end title -->
                     </div>
@@ -81,6 +81,7 @@
                                   <li><a href="#line3_4">Database management</a></li>
                                   <li><a href="#line3_5">Unit tests</a></li>
                                   <li><a href="#line3_6">Using scheduled tasks</a></li>
+                                  <li><a href="#line3_7">Entering in a container</a></li>
                               </ul>
                             </li>
                             <li><a href="#line4">How to's</a>
@@ -97,9 +98,10 @@
                                   <li><a href="#line4_10">Generate your own fractal transformer</a></li>
                               </ul>
                             </li>
-                            <li><a href="#line5">Best practices</a></li>
-                            <li><a href="#line6">Depency Injection</a></li>
-                            <li><a href="#line7">Who I am</a></li>
+                            <li><a href="#line5">Debbuging a gv application</a></li>
+                            <li><a href="#line6">Best practices</a></li>
+                            <li><a href="#line7">Depency Injection</a></li>
+                            <li><a href="#line8">Who I am</a></li>
                             <!--li><a href="#line7">Revolution Slider</a></li>
                             <li><a href="#line8">How to Use Option Panel</a>
                                 <ul class="nav">
@@ -133,7 +135,7 @@
                                                 <li><strong>Name : </strong>GV</li>
                                                 <li><strong>Version : </strong>1.0</li>
                                                 <li><strong>Author  : </strong> <a href="https://www.linkedin.com/in/guidovera/" target="_blank">Guido Vera</a></li>
-                                                <li><strong>License : </strong> <a href="#" target="_blank">GNU</a></li>
+                                                <li><strong>License : </strong> <a href="#" target="_blank">MIT</a></li>
                                             </ul>
                                         </div>
 
@@ -309,23 +311,32 @@
                                 <pre class="brush: html">
                                   $> ./gvconsole
                                 </pre>
-
+                                
                                 <p>That command will output:</p>
-                                clear-cache<br/>
-                                create-controller<br/>
-                                create-model<br/>
-                                create-task<br/>
-                                create-user-role<br/>
-                                create-user-status<br/>
-                                doctrine<br/>
-                                doctrine-migrations<br/>
-                                phpunit<br/>
-                                remove-task<br/>
-                                scheduler<br/>
-                                list-tasks<br/>
-                                build<br/>
-                                start<br/>
-                                <br/>
+                                <pre class="brush: html">
+                                
+                                    -/*-/*-/*-/*-/*-/*-/* APPLICATION COMMANDS -/*-/*-/*-/*-/*-/*-/*
+                                    clear-cache
+                                    create-controller
+                                    create-model
+                                    create-user-role
+                                    create-user-status
+                                    disable-task
+                                    doctrine
+                                    doctrine-migrations
+                                    enable-task
+                                    phpunit
+                                    scheduler
+                                    list-tasks
+                                    
+                                    -/*-/*-/*-/*-/*-/*-/* DEPENDENCY COMMANDS -/*-/*-/*-/*-/*-/*-r/
+                                    composer
+                                    
+                                    -/*-/*-/*-/*-/*-/*-/* BUILDING COMMANDS -/*-/*-/*-/*-/*-/*-/*
+                                    build
+                                    start
+                                    enter
+                                </pre>
                                 <p>We will go one by one, don't worry.</p>
 
                                 <hr>
@@ -550,6 +561,21 @@
                             <!-- end col -->
                         </div>
                         <!-- end row -->
+
+                        <hr>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_7">Entering one of the docker containers - <a href="#top">#back to top</a></h4>
+                                <p>To enter into any of the containers that gv provides you need to run:</p>
+                                <pre class="brush: html">
+                                    $> ./gvconsole enter {name_of_the_container}
+                                </pre>
+                                <p>Actually the containers that gv creates are: gv_mysql_1, gv_redis_1, gv_nginx_1 and gv_php_1</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
                     </section>
                     <!-- end section -->
 
@@ -707,6 +733,33 @@
 
                     <section id="line5" class="section">
 
+                            <div class="row">
+                                <div class="col-md-12 left-align">
+                                    <h2 class="dark-text">Debugging a gv application<a href="#top">#back to top</a><hr></h2>
+                                </div>
+                                <!-- end col -->
+                            </div>
+                            <!-- end row -->
+    
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p>Gv comes with xdebug to be used out of the box. You just need to check that the .docker/php.ini file has the needed lines for this not commented:</p>
+                                    <img src="images/phpini.png" />
+                                    <p>In this case it would be from line 7 to 12, also remember to configure your ide with the correct configuration. For instance on Visual Studio code:</p>
+                                    <img src="images/xdebug_vsc.png" />
+                                    <p>or in PHPStorm:</p>
+                                    <img src="images/xdebug_phpstorm.png" />
+                                </div>
+                                <!-- end col -->
+    
+                            </div>
+                            <!-- end row -->
+    
+                        </section>
+                        <!-- end section -->
+
+                    <section id="line6" class="section">
+
                         <div class="row">
                             <div class="col-md-12 left-align">
                                 <h2 class="dark-text">Best practices <a href="#top">#back to top</a><hr></h2>
@@ -738,7 +791,7 @@
                     </section>
                     <!-- end section -->
 
-                    <section id="line6" class="section">
+                    <section id="line7" class="section">
 
                         <div class="row">
                             <div class="col-md-12 left-align">
@@ -803,7 +856,7 @@
 
                     </section>
 
-                    <section id="line7" class="section">
+                    <section id="line8" class="section">
 
                         <div class="row">
                           <div class="col-md-12 left-align">
