@@ -86,6 +86,7 @@
                             </li>
                             <li><a href="#line4">How to's</a>
                               <ul class="nav">
+                                  <li><a href="#line4_0">Validate input on of your request</a></li>
                                   <li><a href="#line4_1">Validate a field</a></li>
                                   <li><a href="#line4_2">Manage Http handling</a></li>
                                   <li><a href="#line4_3">Use an event</a></li>
@@ -644,6 +645,21 @@
                         </div>
                         <!-- end col -->
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_0">Validate the input of your request - <a href="#top">#back to top</a></h4>
+                            <p>Let's imagine that you need to validate the input set from your HttpRequest. GV has a set of rules for you to do this very easily, following convention over configuration through the ControllerValidationAbstract class.</p>
+                            <p>You could use a new Validation Object, which will be separated from anything else, and then use the validate() method. Look at the example below:</p>
+                            <p>We have a method inside our Examples controller called login, this action expects to receive username and passoword fields.</p>
+                            <p>We then need to Create a new class with the same controller name and method name but under the Validations directory, extending ControllerValidationAbstract like this:</p>
+                            <img src="images/validations_example_directory_structure.png" />
+                            <p>Then we need to implement the same method name we want to validate, in this case login() utilizing the protested "fields" property.</p>
+                            <img src="images/validations_example.png" />
+                        </div>
+                        <!-- end col -->
+                    </div>
+
                     <div class="row">
                         <div class="col-md-12">
                             <h4 id="line4_1">Validate a field - <a href="#top">#back to top</a></h4>
@@ -686,8 +702,8 @@
                               <p>The above will validate that the actual request is of that method (in this case a get method)</p>
                               <p>Tip: you can use multiple Http methods in this annotation, for instance @httpMethod("GET", "POST", "PUT") </p>
                         </div>
-                        <!-- end col -->
                     </div>
+                    
                     <br/><br/>
                     <div class="row">
                         <div class="col-md-12">
