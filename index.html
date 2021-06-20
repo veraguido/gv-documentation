@@ -151,7 +151,8 @@
                                             <h4>Requirements</h4>
                                             <p>You will need the following dependencies to make GV work.</p>
                                             <ol>
-                                                <li><a href="https://docs.docker.com/engine/installation/" target="_blank">Docker</a></li>
+                                                <li><a href="https://docs.docker.com/engine/installation/" target="_blank">docker</a></li>
+                                                <li><a href="https://github.com/docker/compose" target="_blank">docker-compose</a></li>
                                             </ol>
                                             <div class="intro2 clearfix">
                                                 <p><i class="fa fa-exclamation-triangle"></i> Docker will create all the containers needed for GV to work as fast as possible
@@ -182,17 +183,27 @@
                                 <p>GV is composed by a lot of pieces, among them you will find:</p>
 
                                 <ol>
+                                    <li>A set of rules based on convention over configuration</li>
                                     <li>A validation strategy</li>
+                                    <li>Authentication strategies (Basic, JWT and Session in place)</li>
+                                    <li>User management</li>
                                     <li>Http handling</li>
                                     <li>Shell scripts + ORM management through CLI</li>
                                     <li>An event mechanism</li>
                                     <li>Command pattern in place</li>
+                                    <li>Transformers to serialize your objects, your way</li>
+                                    <li>Throttling</li>
+                                    <li>Cron management</li>
+                                    <li>Dependency injection</li>
+                                    <li>Locale management</li>
+                                    <li>A set of utils for: email sending, pagination, file manamgent</li>
                                     <li>Unit tests</li>
+                                    <li>Swagger / Swagger UI</li>
                                     <li>Only one configuration file with only a few REALLY needed lines</li>
                                     <li>A specific routing system, with the possibility of overwriting</li>
                                 </ol>
 
-                                <p>We will cover everything on this page, so, dont be worried about fancy words.</p>
+                                <p>We will cover everything on this page, so, dont be worried about fancy wording.</p>
 
                                 <h4>A deserved mention for all the open source projects that GV uses:</h4>
 
@@ -253,10 +264,15 @@
                           $> git clone git@github.com:veraguido/gv.git
                         </pre>
                         <br/>
+                        <p>Or if you use composer, just do:</p>
+                        <pre class="brush: html">
+                          $> composer create-project gvera/gv
+                        </pre>
+                        <br/>
                         <br/>
                         <br/>
                         <h4>1) Using docker</h4>
-                        <p>We are ready to generate our 3 docker containers now, those are going to be separated in: app, mysql and redis</p>
+                        <p>We are ready to generate our 4 docker containers now, those are going to be separated in: nginx, php, mysql and redis</p>
                         <p>Place yourself in the root folder of GV and run:</p>
                         <pre class="brush: html">
                           $> ./gvconsole build
@@ -264,9 +280,9 @@
 
                         <br/>
                         <br/>
-                        <p>After that command finished, our containers are ready to be started:</p>
+                        <p>After the command is finished, our containers are ready to be started:</p>
                         <pre class="brush: html">
-                          $> ./gvconsole start
+                          $> ./gvconsole up
                         </pre>
                         <br/>
                         <br/>
@@ -277,23 +293,9 @@
                         <p>Now navigate to localhost:8089 in your browser to check if the installation was successful. You should be able to see the welcome json object indicating the version of GV and the cache that is being used.</p>
 
                         <h4>2) Manual installation (Only if you don't want to use docker) <a href="#line3">#goto next section</a> <a href="#top">#back to top</a></h4>
-                        <p>Be sure to install: apache2(or any php web server), php, composer, mysql and redis.</p>
-                        <p>Configure your web server to allow override, so GV is able to use the .htaccess and redirect the requests to a single point, basically the app run.</p>
-                        <p>For example on apache2 web server edit your virtual configuration</p>
-
-                        <img src="images/allow_override.png" />
-                        <br/>
-
-                        <p>Enable the rewrite module:</p>
-                        <pre class="brush: html">
-                          $> sudo a2enmod rewrite
-                        </pre>
-
-                        <p>Edit your php.ini to let apache2 handle sessions through redis, changing the following values:</p>
-                        session.save_handler = redis
-                        <br/> and <br/>
-                        session.save_path = "tcp://localhost:6379" #or your redis host
-                        <br/>
+                        <p>Be sure to install: the web server of your choice, php, composer, mysql and redis.</p>
+                        <p>Configure your web server's virtual hosts to point all its requests to public/index.php which is the application's entry point</p>
+                        <p>go to config/config.yml and configure your app to change your database's credentials</p>
 
                         <hr>
                     </section>
@@ -319,23 +321,35 @@
                                     clear-cache
                                     create-controller
                                     create-model
+                                    create-user
                                     create-user-role
+                                    create-user-role-action
                                     create-user-status
                                     disable-task
                                     doctrine
                                     doctrine-migrations
                                     enable-task
-                                    phpunit
+                                    generate-api-doc
+                                    list-user-roles
                                     scheduler
+                                    tests
                                     list-tasks
-                                    
-                                    -/*-/*-/*-/*-/*-/*-/* DEPENDENCY COMMANDS -/*-/*-/*-/*-/*-/*-r/
+
+                                    -/*-/*-/*-/*-/*-/*-/* DEPENDENCY COMMANDS -/*-/*-/*-/*-/*-/*-/* 
                                     composer
-                                    
+
                                     -/*-/*-/*-/*-/*-/*-/* BUILDING COMMANDS -/*-/*-/*-/*-/*-/*-/*
                                     build
+                                    phpcs
+                                    phpcbf
+                                    -/*-/*-/*-/*-/*-/*-/* CONTAINER MANAGEMENT COMMANDS -/*-/*-/*-/*-/*-/*-/*
                                     start
+                                    stop
+                                    up
+                                    down
+                                    logs
                                     enter
+
                                 </pre>
                                 <p>We will go one by one, don't worry.</p>
 
@@ -350,7 +364,7 @@
                                 <h4 id="line3_1">Manage cache - <a href="#top">#back to top</a></h4>
                                 <h5>$> ./gvconsole clear-cache</h5>
                                 <p>In a typical gv application, the cache is going to be managed by redis, but redis is not mandatory, the strategy is, gv will ping redis, if this one is available it will be used, if not, the files cache strategy will be put in place.
-                                <br/>If redis is not used, the cache will be stored in the var/cache/files/ directory.</p>
+                                <br/>If redis is not used, the cache will be stored in the var/cache/files/ directory. Note: this fallback can be changed on the config file.</p>
                             </div>
                             <!-- end col -->
                             <div class="col-md-7">
@@ -465,7 +479,7 @@
                             <!-- end col -->
                             <br/>
                             <br/>
-                            <p>For using doctrine migrations, those are going to be put under resources/migrations/classes/ directory</p>
+                            <p>For using doctrine migrations, those are going to be put under resources/migrations/ directory</p>
                             <p>The command to be run to manage migrations is ./gvconsole doctrine-migrations</p>
                             <pre class="brush: html">
                               ./gvconsole doctrine-migrations
@@ -504,7 +518,7 @@
                         <div class="row">
                             <div class="col-md-5">
                                 <h4 id="line3_5">Unit tests - <a href="#top">#back to top</a></h4>
-                                <p>Unit tests are created under the tests folder in the root of the project, Phpunit is used for them.
+                                <p>Unit tests are created under the tests directory in the root of the project, Phpunit is used for them.
                                 if you have any doubt please read <a href="https://phpunit.de/documentation.html">their documentation</a>.</p>
                                 <p>To run unit tests, please use ./gvconsole phpunit</p>
                             </div>
@@ -522,7 +536,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h4 id="line3_6">Using scheduled tasks - <a href="#top">#back to top</a></h4>
-                                <p>The scheduled tasks are basically cron jobs that will execute your tasks on a specific period of time.</p>
+                                <p>The scheduled tasks are basically cron jobs that will execute your tasks on a specific moment in time.</p>
                                 <p>GV will handle the setup for it you only need to focus on 3 things: create the task that you want to execute, enabling your task and disabling it if you want.</p>
                                 <p>Tasks should be put in the tasks directory under Resources</p>
                                 <img src="images/tree.png" alt="tasks marked">
@@ -571,11 +585,55 @@
                                 <pre class="brush: html">
                                     $> ./gvconsole enter {name_of_the_container}
                                 </pre>
-                                <p>Actually the containers that gv creates are: gv_mysql_1, gv_redis_1, gv_nginx_1 and gv_php_1</p>
+                                <p>The containers that gv creates by default are: gv_mysql_1, gv_redis_1, gv_nginx_1 and gv_php_1</p>
                             </div>
                             <!-- end col -->
                         </div>
                         <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_7">checking logs - <a href="#top">#back to top</a></h4>
+                                <p>To check logs on all containers at once just run</p>
+                                <pre class="brush: html">
+                                    $> ./gvconsole logs
+                                </pre>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_7">User management through the command line - <a href="#top">#back to top</a></h4>
+                                <p>You can create users, user roles and user role actions, for example:</p>
+                                <pre class="brush: html">
+                                    $> ./gvconsole create-user-role admin 10
+                                    $> ./gvconsole create-user admin admin@admin.com complexPassword admin
+                                    $> ./gvconsole create-user-role-action canpublish admin
+                                </pre>
+                                <p>We first create a new user role with the role name and a role priority (an integer defined by you) as a second parameter.</p>
+                                <p>We then use the create-user command with: username, email, password and role name as parameters.</p>
+                                <p>Lastly, and only if you want to use it on your application, we define a role action with a role name as a second parameter</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 id="line3_7">Generate api documentation - <a href="#top">#back to top</a></h4>
+                                <p>If you use <a>the openAPI standard</a> on your controllers you can generate the api docs with:</p>
+                                <pre class="brush: html">
+                                    $> ./gvconsole generate-api-doc
+                                </pre>
+                                <p>This will scan all your controllers and generate the api documentation, which will be under /doc </p>
+                                <p>Note: the documentation is under basic authentication and you have to have a valid user to access it.</p>
+                            </div>
+                            <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
                     </section>
                     <!-- end section -->
 
@@ -608,7 +666,8 @@
                             <p><u>HttpRequest</u></p>
                             <p>HttpRequest has the getParameter method that will return the fields wanted. For instance, inside a controller you can:</p>
                             <img src="images/request_getparameter.png" alt="http request">
-                            <p>Within the HttpRequest You can also check the request method using isPost, isGet, isDelete, isPut</p>
+                            <p>Within the HttpRequest You can also check the request method using isPost(), isGet(), isDelete(), isPut() and isPatch()</p>
+                            <p>When you want to generate a response, you can use Any of the built-in response types: Response, JSONResponse, TransformerResponse or PrintErrorResponse</p>
 
                             <p><u>HttpResponse</u></p>
                             <p>In your controller you can setup your httpresponse, the default behavior will be:</p>
@@ -624,7 +683,7 @@
                                     //your code here
                                 }
                               </pre>
-                              <p>The above will validate that the actual request is of that type (in this case a get type)</p>
+                              <p>The above will validate that the actual request is of that method (in this case a get method)</p>
                               <p>Tip: you can use multiple Http methods in this annotation, for instance @httpMethod("GET", "POST", "PUT") </p>
                         </div>
                         <!-- end col -->
@@ -635,7 +694,7 @@
                             <h4 id="line4_3">Use an event - <a href="#top">#back to top</a></h4>
                             <p>GV includes an event mechanism ready to be used. This mechanism is composed by different parts.</p>
                             <h4>An event registry</h4>
-                            <p>All your event listeners will need to be registered in this Class, inside the registerEventListeners() method, GV will handle the relationships after it. For example:</p>
+                            <p>All your event listeners will need to be registered in this Class, inside GvEventListenerRegistry->registerEventListeners() method, GV will handle the relationships after it. For example:</p>
                             <img src="images/event-registry.png" alt="">
                             <br/><br/>
                             <h4>Events</h4>
@@ -656,7 +715,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h4 id="line4_4">Create and execute a command - <a href="#top">#back to top</a></h4>
-                            <p>GV includes a command patter put in place for enforcing the hexagonal architecture and make your code frameworkless.</p>
+                            <p>GV includes a command pattern put in place for enforcing the hexagonal architecture and make your code frameworkless.</p>
                             <p>Your commands will need to implement CommandInterface, and you will need to implement the execute method. For example:</p>
                             <img src="images/command.png" alt="" />
                             <p>Then you need to execute the command where you think is needed:</p>
@@ -693,9 +752,10 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 id="line4_8">Return a specific HTTP response headers - <a href="#top">#back to top</a></h4>
-                            <p>GV comes with some pre-built Http response codes: 404 Not found, 400 Bad Request, and 401 Unauthorized, you can always add the response headers that you need in the HttpResponse Class.</p>
-                            <p>Is recommended that you use them on your controllers, calling $this->httpResponse->notFound() (unauthorized() ,  badRequest())</p>
+                            <h4 id="line4_8">Return a specific HTTP Response - <a href="#top">#back to top</a></h4>
+                            <p>GV comes with some pre-built Http response types: Response, JSONResponse, TransformerResponse, PrintErrorResponse</p>
+                            <p>In your controller you just have to call $this->httpResponse->response() specifying which response you want. For example:</p>
+                            <img src="images/default_response.png" alt="routes">
                         </div>
                         <!-- end col -->
                     </div>
@@ -706,7 +766,7 @@
                             <p>GV was done with ease in mind, every exception thrown will be catched by the application and depending on the state of the app two things can happen:</p>
                             <ul>
                                 <li>If the application is in dev mode (the dev mode flag is true on the config.yml file) then the application will die showing the exception message</li>
-                                <li>If the application is not in dev mode, then the application will log the error and redirect the location to the root.</li>
+                                <li>If the application is not in dev mode, then the application will log the error and redirect the uri to the root.</li>
                             </ul>
 
                             <p>As a good practice you can throw a GVException with parameters, that will be sent to the log through Logger.</p>
@@ -717,10 +777,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <h4 id="line4_9">Generate your own fractal transformer - <a href="#top">#back to top</a></h4>
-                            <p>A fractal transformer is a way of present filtered data as output on the response of your Restful API</p>
-                            <p>As part of the response of your httpResponse object you can pass a Transformer object (that extends from TransformerAbstract) and The response method will call the transform method of that transformer object, Basically transforming the data the way you need it</p>
+                            <p>A fractal transformer is a way of present filtered and serialized data as output on the response of your Restful API</p>
+                            <p>When calling httpResponse->response() method, you can pass a TransformerResponse object, which will take care of the rest.</p>
 
                             <p>The way to do this is extending the TransformerAbstract class, and pass your object on the constructor. In this new transformer class you need to overwrite the transform method. </p>
+                            <p>Please not that your transformer object should be on src/Helpers/transformers/ directory.</p>
                             <p>The transform method should return an array containing exactly what you need to response. See the example below:</p>
 
                             <img src="images/transformer.png" />
@@ -749,6 +810,7 @@
                                     <img src="images/xdebug_vsc.png" />
                                     <p>or in PHPStorm:</p>
                                     <img src="images/xdebug_phpstorm.png" />
+                                    <p>You can obviously disable xdebug on the php.ini file</p>
                                 </div>
                                 <!-- end col -->
     
@@ -778,7 +840,7 @@
                                 <h4 id="line5_1">General - <a href="#top">#top</a></h4>
                                 <ul>
                                     <li><strong>Always use plural names for your controllers</strong> - for examples Cars.</li>
-                                    <li><strong>If you want to use versions for your API, just create a subdirectory inside the Controllers folder.</strong></li>
+                                    <li><strong>If you want to use versions or categories for your API, just create a subdirectory inside the Controllers folder.</strong></li>
                                     <li><strong>Always use singular names for your models</strong> - for example Car.</li>
                                     <li><strong>Move your business logic to services</strong> - in that way you will isolate them and you will be able to treat them as ports and adapters.</li>
                                 </ul>
