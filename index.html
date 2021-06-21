@@ -97,6 +97,7 @@
                                   <li><a href="#line4_8">Return specific HTTP response headers</a></li>
                                   <li><a href="#line4_9">One try catch to rule them all</a></li>
                                   <li><a href="#line4_10">Generate your own fractal transformer</a></li>
+                                  <li><a href="#line4_11">Use throttling</a></li>
                               </ul>
                             </li>
                             <li><a href="#line5">Debbuging a gv application</a></li>
@@ -793,7 +794,7 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <h4 id="line4_9">Generate your own fractal transformer - <a href="#top">#back to top</a></h4>
+                            <h4 id="line4_10">Generate your own fractal transformer - <a href="#top">#back to top</a></h4>
                             <p>A fractal transformer is a way of present filtered and serialized data as output on the response of your Restful API</p>
                             <p>When calling httpResponse->response() method, you can pass a TransformerResponse object, which will take care of the rest.</p>
 
@@ -802,6 +803,17 @@
                             <p>The transform method should return an array containing exactly what you need to response. See the example below:</p>
 
                             <img src="images/transformer.png" />
+                        </div>
+                        <!-- end col -->
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="line4_11">Use throttling - <a href="#top">#back to top</a></h4>
+                            <p>Throttling will prevent DDOS or brute force attacks on your application, limiting the ammount of requests per second allowed on a given ip</p>
+                            <p>Please note that for using throttling, your application has to use redis as the source of your cache.</p>
+
+                            <p>The way of enabling throttling and the allowance is as easy as going into config/config.yml and change throttling value to true, as well as "allowed_requests_per_second" to the number you'd prefer.</p>
                         </div>
                         <!-- end col -->
                     </div>
